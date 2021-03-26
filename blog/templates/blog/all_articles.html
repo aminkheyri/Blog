@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="card">
+{% for articles in all_articles %}
+<p class="card-body">
+{{ articles.title }}
+</p>
+{% endfor %}
 
+</div>
 {% endblock %}
