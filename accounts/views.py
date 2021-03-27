@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect
-from .forms import UserLoginForm
-from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from .forms import UserLoginForm, UserRegistrationForm
+from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 def user_login(request):
@@ -20,3 +21,22 @@ def user_login(request):
     else:
         form = UserLoginForm()
     return render(request, 'accounts/login.html', {'form': form})
+
+
+def user_register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            User.objects.create_user(cd['user_name'], cd['email'], cd['password'])
+            messages.success(request, 'Congrats You Registered successfully Now Please log in')
+            return redirect('accounts:user_login')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'accounts/register.html ', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    messages.success(request, 'You logged out successfully', 'success')
+    return redirect('blog:all_article')
