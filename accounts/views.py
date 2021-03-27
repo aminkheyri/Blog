@@ -28,7 +28,7 @@ def user_register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            User.objects.create_user(cd['user_name'], cd['email'], cd['password'])
+            User.objects.create_user(cd['user_name'], cd['email'], cd['password1'])
             messages.success(request, 'Congrats You Registered successfully Now Please log in')
             return redirect('accounts:user_login')
     else:
